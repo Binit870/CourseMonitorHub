@@ -44,6 +44,7 @@ function Courses() {
   const [error, setError] = useState(null);
 
   const fetchCourses = async () => {
+    // Logic for fetching courses...
     setLoading(true);
     setError(null);
 
@@ -144,7 +145,7 @@ function Courses() {
       {list.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {list.map((course, i) => (
-            <CourseCard key={i} course={course} />
+            <CourseCard key={`${course.url}-${i}`} course={course} />
           ))}
         </div>
       ) : (
@@ -167,6 +168,7 @@ function Courses() {
             placeholder="Search for any topic..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && fetchCourses()}
             className="px-4 py-2 w-full sm:w-80 border border-gray-300 dark:border-gray-600 rounded-lg sm:rounded-l-lg sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:bg-gray-800 dark:text-white"
           />
           <button
@@ -176,9 +178,10 @@ function Courses() {
             Search
           </button>
         </div>
-
-        {loading && <p className="text-center dark:text-gray-300">Loading...</p>}
-        {error && <p className="text-center text-red-600">{error}</p>}
+        
+        {/* Status Messages */}
+        {loading && <p className="text-center font-medium text-gray-600 dark:text-gray-300">Loading...</p>}
+        {error && <p className="text-center font-medium text-red-600 dark:text-red-400">{error}</p>}
 
         {!loading &&
           !error &&

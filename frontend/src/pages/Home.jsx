@@ -7,36 +7,50 @@ const Home = () => {
       {/* Hero Section */}
       {/* ============================================= */}
       <section className="text-center py-16 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-          Stop Searching. Start Learning.
-        </h1>
-        <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300">
-          Track thousands of online courses from top platforms and never miss a
-          deal. Your all-in-one hub for upskilling.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <a
-            href="#start"
-            className="inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-cyan-600 dark:bg-teal-400 dark:hover:bg-teal-500 transform hover:-translate-y-1 transition-all duration-300"
-          >
-            Start Tracking for Free
-          </a>
-        </div>
-        <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-          No credit card required. Free forever.
-        </p>
+  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+    Stop Searching. Start Learning.
+  </h1>
+  <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300">
+    Track thousands of online courses from top platforms and never miss a
+    deal. Your all-in-one hub for upskilling.
+  </p>
+  <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+    <a
+      href="#start"
+      className="inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-cyan-600 dark:bg-teal-400 dark:hover:bg-teal-500 transform hover:-translate-y-1 transition-all duration-300"
+    >
+      Start Tracking for Free
+    </a>
+  </div>
+  <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+    No credit card required. Free forever.
+  </p>
 
-        <div className="mt-12 flex justify-center items-center gap-6 sm:gap-12 flex-wrap grayscale opacity-80">
-          {["Coursera", "Udemy", "edX", "upGrad", "NPTEL"].map((brand) => (
-            <span
-              key={brand}
-              className="font-semibold text-lg text-slate-500 dark:text-slate-400"
-            >
-              {brand}
-            </span>
-          ))}
-        </div>
-      </section>
+  {/* --- MODIFIED BRAND SECTION --- */}
+  <div className="mt-12 flex justify-center items-center gap-4 sm:gap-8 flex-wrap">
+    {[
+      { name: "Coursera", url: "https://www.coursera.org" },
+      { name: "Udemy", url: "https://www.udemy.com" },
+      { name: "edX", url: "https://www.edx.org" },
+      { name: "upGrad", url: "https://www.upgrad.com" },
+      { name: "NPTEL", url: "https://nptel.ac.in" },
+    ].map((brand) => (
+      <a
+        key={brand.name}
+        href={brand.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="px-4 py-2 rounded-lg font-semibold text-lg text-slate-500 dark:text-slate-400
+                   grayscale opacity-70 hover:grayscale-0 hover:opacity-100 
+                   hover:bg-white hover:shadow-md hover:text-cyan-600
+                   dark:hover:bg-slate-800 dark:hover:text-cyan-300
+                   transition-all duration-300 transform hover:-translate-y-1"
+      >
+        {brand.name}
+      </a>
+    ))}
+  </div>
+</section>
 
       {/* ============================================= */}
       {/* How It Works Section */}
@@ -120,7 +134,7 @@ const Home = () => {
       {/* ============================================= */}
       {/* Social Proof Section */}
       {/* ============================================= */}
-      <section className="py-16 bg-slate-800 text-white px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-slate-100 dark:bg-slate-800 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-center text-2xl sm:text-4xl font-bold mb-12">
             Trusted by Over 50,000 Learners in India
@@ -140,12 +154,12 @@ const Home = () => {
             ].map((testimonial, idx) => (
               <div
                 key={idx}
-                className="bg-slate-700/50 p-6 sm:p-8 rounded-2xl flex flex-col"
+                className="bg-white dark:bg-slate-700/50 p-6 sm:p-8 rounded-2xl flex flex-col shadow-lg"
               >
-                <blockquote className="text-sm sm:text-lg italic text-slate-300 flex-grow border-l-4 border-cyan-500 dark:border-teal-400 pl-4 sm:pl-6">
+                <blockquote className="text-base sm:text-lg italic text-slate-600 dark:text-slate-300 flex-grow border-l-4 border-cyan-500 dark:border-teal-400 pl-4 sm:pl-6">
                   "{testimonial.quote}"
                 </blockquote>
-                <cite className="mt-4 sm:mt-6 font-bold not-italic text-slate-200 text-sm sm:text-base">
+                <cite className="mt-4 sm:mt-6 font-bold not-italic text-slate-700 dark:text-slate-200 text-sm sm:text-base">
                   – {testimonial.name}
                 </cite>
               </div>
@@ -159,7 +173,7 @@ const Home = () => {
       {/* ============================================= */}
       <section
         id="start"
-        className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900"
+        className="py-16 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl sm:text-4xl font-bold">
@@ -170,7 +184,7 @@ const Home = () => {
             today.
           </p>
           <a
-            href="signup"
+            href="/signup" // Changed to a relative link for React Router
             className="mt-8 inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-cyan-600 dark:bg-teal-400 dark:hover:bg-teal-500 transform hover:-translate-y-1 transition-all duration-300"
           >
             Create Your Free Account

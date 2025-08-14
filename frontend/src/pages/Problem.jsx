@@ -127,25 +127,39 @@ const Problem = () => {
   };
 
   const handleRunCode = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/run-code", {
+  const langMap = {
+    javascript: 63,
+    python: 71,
+    java: 62,
+    go: 95,
+    "c++": 54,
+  };
+
+  try {
+    const response = await fetch(
+      "https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-RapidAPI-Key": import.meta.env.VITE_JUDGE0_API_KEY,
+          "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
         },
-        body: JSON.stringify({ language, code: starterCode }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error running code");
+        body: JSON.stringify({
+          source_code: starterCode,
+          language_id: langMap[language],
+          stdin: "",
+        }),
       }
+    );
 
-      const result = await response.json();
-      setRunResult(result.output || "No output");
-    } catch (err) {
-      setRunResult(`Error: ${err.message}`);
-    }
-  };
+    const data = await response.json();
+    setRunResult(data.stdout || data.stderr || "No output");
+  } catch (err) {
+    setRunResult(`Error: ${err.message}`);
+  }
+};
+
 
   return (
     <div className="p-4 sm:p-6 max-w-5xl mx-auto">

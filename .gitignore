@@ -1,0 +1,51 @@
+# =======================================================
+# Dependencies
+# =======================================================
+# Ignore the folder containing all installed packages
+node_modules/
+
+# =======================================================
+# Build & Output
+# =======================================================
+# Ignore build output folders from various tools
+dist/
+.next/
+.nuxt/
+build/
+out/
+
+# =======================================================
+# Sensitive Information (Env Files)
+# =======================================================
+# Ignore all .env files to keep secrets like API keys safe.
+# It's a good practice to commit a .env.example file to show what variables are needed.
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# You can be more specific if you prefer, like you were:
+# /frontend/.env
+# /server/.env
+
+# =======================================================
+# Logs
+# =======================================================
+# Ignore log files generated during development or in production
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =======================================================
+# System & IDE Files
+# =======================================================
+# Ignore operating system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor configuration folders
+.vscode/
+.idea/
