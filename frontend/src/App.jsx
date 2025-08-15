@@ -20,7 +20,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Interview from "./pages/Interview"; // Import the Interview page
-
+import Notifications from "./pages/Notifications"; // Import the Notifications page
 const App = () => {
   const location = useLocation();
 
@@ -29,7 +29,7 @@ const App = () => {
   const showNavAndFooter = !noNavAndFooterRoutes.includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen">
       {showNavAndFooter && <Navbar />}
 
       <main className="flex-grow">
@@ -42,6 +42,14 @@ const App = () => {
           <Route path="/home" element={<Home />} />
 
           {/* Protected Routes: Wrap pages that require a user to be logged in */}
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={

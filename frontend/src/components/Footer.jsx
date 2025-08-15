@@ -1,30 +1,37 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Twitter, Github, Linkedin, BookOpen } from "lucide-react";
 
 const Footer = () => {
+  // Simplified the link sections to only the essentials
   const linkSections = [
     {
-      title: "Solutions",
-      links: ["Marketing", "Analytics", "Commerce", "Insights"],
+      title: "Company",
+      links: [
+        { name: "About Us", path: "/about" },
+        { name: "Partners", path: "/partners" },
+      ],
     },
     {
       title: "Support",
-      links: ["Pricing", "Documentation", "Guides", "API Status"],
-    },
-    {
-      title: "Company",
-      links: ["About", "Blog", "Jobs", "Press", "Partners"],
+      links: [
+        { name: "Contact Us", path: "/contact" },
+        { name: "Help Center", path: "/help" },
+      ],
     },
     {
       title: "Legal",
-      links: ["Claim", "Privacy", "Terms"],
+      links: [
+        { name: "Privacy Policy", path: "/privacy" },
+        { name: "Terms of Service", path: "/terms" },
+      ],
     },
   ];
 
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 transition-colors">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between gap-8">
+        <div className="flex flex-col md:flex-row justify-start gap-8 md:gap-16 lg:gap-24">
           
           {/* Company Info */}
           <div className="space-y-6 md:w-1/3">
@@ -37,23 +44,21 @@ const Footer = () => {
             <p className="text-gray-500 dark:text-gray-400">
               Making the world a better place through constructing elegant hierarchies.
             </p>
-
-            {/* Social icons */}
             <div className="flex space-x-5">
-              <a href="#" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
                 <Twitter size={24} />
               </a>
-              <a href="#" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
                 <Github size={24} />
               </a>
-              <a href="#" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
                 <Linkedin size={24} />
               </a>
             </div>
           </div>
 
           {/* Links */}
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 md:w-2/3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
             {linkSections.map((section) => (
               <div key={section.title}>
                 <h3 className="text-sm font-semibold uppercase">
@@ -61,13 +66,13 @@ const Footer = () => {
                 </h3>
                 <ul className="mt-4 space-y-3">
                   {section.links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
+                    <li key={link.name}>
+                      <Link
+                        to={link.path}
                         className="text-gray-500 dark:text-gray-400 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
                       >
-                        {link}
-                      </a>
+                        {link.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -77,7 +82,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} CourseMonitorHub, Inc. All rights reserved.
           </p>

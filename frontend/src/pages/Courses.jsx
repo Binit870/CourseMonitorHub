@@ -1,4 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+
+// A small, reusable hook to delay execution of a function
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+  return debouncedValue;
+}
 
 const CourseCard = ({ course }) => (
   <article className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md hover:shadow-lg transition-transform duration-300 hover:-translate-y-1 flex flex-col overflow-hidden">
@@ -43,14 +57,18 @@ function Courses() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchCourses = async () => {
-    // Logic for fetching courses...
+  // Debounce the search input. The API call will only be made 500ms after the user stops typing.
+  const debouncedSearchTerm = useDebounce(search, 500);
+
+  // Modified fetchCourses to accept a search term argument
+  const fetchCourses = useCallback(async (searchTerm) => {
     setLoading(true);
     setError(null);
 
     try {
+      // The rest of your fetching logic remains exactly the same...
       const res = await fetch(
-        `https://course-api-beryl.vercel.app/api/all-courses?search=${encodeURIComponent(search)}`
+        `https://course-api-beryl.vercel.app/api/all-courses?search=${encodeURIComponent(searchTerm)}`
       );
       if (!res.ok) throw new Error("Failed to fetch from backend");
 
@@ -71,7 +89,7 @@ function Courses() {
       try {
         const udemyRes = await fetch(
           `https://udemy-paid-courses-for-free-api.p.rapidapi.com/rapidapi/courses/search?page=1&page_size=20&query=${encodeURIComponent(
-            search
+            searchTerm
           )}`,
           {
             method: "GET",
@@ -131,11 +149,12 @@ function Courses() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []); // useCallback is used for performance optimization
 
+  // This useEffect now triggers the API call automatically and safely.
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    fetchCourses(debouncedSearchTerm);
+  }, [debouncedSearchTerm, fetchCourses]);
 
   const renderPlatform = (title, list) => (
     <section className="mb-8 sm:mb-12" key={title}>
@@ -161,24 +180,23 @@ function Courses() {
           All Online Courses
         </h1>
 
-        {/* Search */}
+        {/* Search: The manual onClick and onKeyDown are removed to prevent spamming the API. */}
         <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center mb-6 sm:mb-10 gap-2">
           <input
             type="text"
             placeholder="Search for any topic..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && fetchCourses()}
             className="px-4 py-2 w-full sm:w-80 border border-gray-300 dark:border-gray-600 rounded-lg sm:rounded-l-lg sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:bg-gray-800 dark:text-white"
           />
           <button
-            onClick={fetchCourses}
+            onClick={() => fetchCourses(search)} // Kept for manual search, but debouncing handles automatic search
             className="bg-cyan-600 dark:bg-cyan-500 text-white px-4 py-2 rounded-lg sm:rounded-r-lg sm:rounded-l-none hover:bg-cyan-700 dark:hover:bg-cyan-400 transition"
           >
             Search
           </button>
         </div>
-        
+
         {/* Status Messages */}
         {loading && <p className="text-center font-medium text-gray-600 dark:text-gray-300">Loading...</p>}
         {error && <p className="text-center font-medium text-red-600 dark:text-red-400">{error}</p>}

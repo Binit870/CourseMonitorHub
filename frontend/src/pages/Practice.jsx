@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import Editor from "react-simple-code-editor";
-import Prism from "prismjs";
+import { Editor } from "@monaco-editor/react"; // ✅ Import Monaco Editor
 import { Play } from "lucide-react";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-c";
-import "prismjs/components/prism-cpp";
-import "prismjs/themes/prism.css";
 
-const judge0ApiKey = import.meta.env.VITE_JUDGE0_API_KEY; // ✅ Load from .env
+const judge0ApiKey = import.meta.env.VITE_JUDGE0_API_KEY;
 
 // Judge0 language IDs (https://ce.judge0.com/ for list)
 const languageIdMap = {
@@ -18,27 +11,67 @@ const languageIdMap = {
   java: 62,
   c: 50,
   cpp: 54,
+  typescript: 74,
+  csharp: 51,
+  go: 60,
+  swift: 83,
+  kotlin: 78,
+  ruby: 72,
+  php: 68,
+  rust: 73,
 };
 
 const codeStubs = {
-  javascript: 'console.log("Hello from JavaScript!");',
-  python: 'print("Hello from Python!")',
+  javascript: 'const x = 10;\nconsole.log(`Hello from JavaScript! x = ${x}`);',
+  python: 'x = 10\nprint(f"Hello from Python! x = {x}")',
   java: `public class Main {
   public static void main(String[] args) {
-    System.out.println("Hello from Java!");
+    int x = 10;
+    System.out.println("Hello from Java! x = " + x);
   }
 }`,
   c: `#include <stdio.h>
 
 int main() {
-  printf("Hello from C!");
+  int x = 10;
+  printf("Hello from C! x = %d\\n", x);
   return 0;
 }`,
   cpp: `#include <iostream>
 
 int main() {
-  std::cout << "Hello from C++!";
+  int x = 10;
+  std::cout << "Hello from C++! x = " << x;
   return 0;
+}`,
+  typescript: 'const x: number = 10;\nconsole.log(`Hello from TypeScript! x = ${x}`);',
+  csharp: `using System;
+
+class Program {
+  static void Main(string[] args) {
+    int x = 10;
+    Console.WriteLine($"Hello from C#! x = {x}");
+  }
+}`,
+  go: `package main
+
+import "fmt"
+
+func main() {
+  x := 10
+  fmt.Printf("Hello from Go! x = %d", x)
+}`,
+  swift: `var x = 10
+print("Hello from Swift! x = \\(x)")`,
+  kotlin: `fun main() {
+  val x = 10
+  println("Hello from Kotlin! x = $x")
+}`,
+  ruby: 'x = 10\nputs "Hello from Ruby! x = #{x}"',
+  php: '<?php\\n$x = 10;\\necho "Hello from PHP! x = " . $x;\\n?>',
+  rust: `fn main() {
+    let x = 10;
+    println!("Hello from Rust! x = {}", x);
 }`,
 };
 
@@ -48,8 +81,7 @@ export default function Practice() {
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
 
-  const highlightCode = (code) =>
-    Prism.highlight(code, Prism.languages[language], language);
+  // The 'highlight' function is no longer needed; Monaco handles it automatically.
 
   const handleRunCode = async () => {
     setIsRunning(true);
@@ -66,7 +98,7 @@ export default function Practice() {
         body: JSON.stringify({
           source_code: code,
           language_id: languageIdMap[language],
-          stdin: "", // you can add input here if needed
+          stdin: "",
         }),
       });
 
@@ -87,9 +119,20 @@ export default function Practice() {
     setIsRunning(false);
   };
 
+  const handleEditorChange = (value) => {
+    setCode(value);
+  };
+
+  const handleLanguageChange = (e) => {
+    const newLang = e.target.value;
+    setLanguage(newLang);
+    setCode(codeStubs[newLang]);
+    setOutput("");
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <div className="p-4 pb-4 sm:p-6 max-w-4xl mx-auto dark:bg-gray-900">
+      <div className="p-4 pb-4 sm:p-6 w-full max-w-6xl mx-auto dark:bg-gray-900">
         <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
           Practice Programming Languages
         </h2>
@@ -98,12 +141,7 @@ export default function Practice() {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4">
           <select
             value={language}
-            onChange={(e) => {
-              const newLang = e.target.value;
-              setLanguage(newLang);
-              setCode(codeStubs[newLang]);
-              setOutput("");
-            }}
+            onChange={handleLanguageChange}
             className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none"
           >
             {Object.keys(languageIdMap).map((lang) => (
@@ -127,17 +165,17 @@ export default function Practice() {
           </button>
         </div>
 
-        {/* Code Editor */}
+        {/* ✅ Code Editor (Now Monaco) */}
         <div className="rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
           <Editor
+            height="50vh" // Set a height for the editor
+            language={language}
+            theme="vs-dark" // Use a built-in theme
             value={code}
-            onValueChange={setCode}
-            highlight={highlightCode}
-            padding={15}
-            className="bg-gray-100 dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 overflow-auto"
-            style={{
-              fontFamily: '"Fira code", "Fira Mono", monospace',
-              minHeight: "300px",
+            onChange={handleEditorChange}
+            options={{
+              fontSize: 14,
+              minimap: { enabled: false }, // Optionally disable the minimap
             }}
           />
         </div>

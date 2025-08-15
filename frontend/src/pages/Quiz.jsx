@@ -10,6 +10,8 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState(null);
 
   const availableTopics = [
     "JavaScript",
@@ -71,28 +73,26 @@ const Quiz = () => {
   };
 
   const handleSelectAnswer = (answer) => {
+    const correct = questions[currentQuestionIndex].answer;
     setSelectedAnswers({
       ...selectedAnswers,
       [currentQuestionIndex]: answer,
     });
+    setCorrectAnswer(correct);
+    setShowAnswer(true);
+
+    if (answer === correct) {
+      setScore((prev) => prev + 1);
+    }
   };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
+      setShowAnswer(false);
+      setCorrectAnswer(null);
     } else {
-      let finalScore = 0;
-      questions.forEach((q, index) => {
-        if (selectedAnswers[index] === q.answer) finalScore++;
-      });
-      setScore(finalScore);
       setQuizState("finished");
-    }
-  };
-
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
 
@@ -103,6 +103,8 @@ const Quiz = () => {
     setQuestions([]);
     setSelectedAnswers({});
     setError(null);
+    setShowAnswer(false);
+    setCorrectAnswer(null);
   };
 
   // SETTINGS SCREEN
@@ -116,7 +118,6 @@ const Quiz = () => {
           {error && (
             <p className="text-red-500 text-center mb-4 text-sm">{error}</p>
           )}
-
           <div className="mb-4">
             <label className="block mb-2 text-gray-600 dark:text-gray-300">
               Topic:
@@ -133,7 +134,6 @@ const Quiz = () => {
               ))}
             </select>
           </div>
-
           <div className="mb-6">
             <label className="block mb-2 text-gray-600 dark:text-gray-300">
               Difficulty:
@@ -148,7 +148,6 @@ const Quiz = () => {
               <option value="hard">Hard</option>
             </select>
           </div>
-
           <button
             onClick={handleStartQuiz}
             className="w-full bg-cyan-500 hover:bg-cyan-600 dark:bg-teal-500 dark:hover:bg-teal-600 text-white p-3 rounded-lg font-semibold transition"
@@ -208,7 +207,6 @@ const Quiz = () => {
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
-
           <div className="text-center mb-6">
             <span className="text-gray-500 dark:text-gray-400 text-sm">
               Question {currentQuestionIndex + 1} of {questions.length}
@@ -217,51 +215,65 @@ const Quiz = () => {
               {currentQuestion.question}
             </h2>
           </div>
-
           <div className="space-y-3">
             {currentQuestion.options.map((option, index) => {
-              const isSelected = selectedAnswer === option;
+              let buttonClass =
+                "border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700";
+              if (showAnswer) {
+                if (option === correctAnswer) {
+                  buttonClass =
+                    "border-green-500 bg-green-50 dark:border-green-500 dark:bg-green-900/30";
+                } else if (option === selectedAnswer) {
+                  buttonClass =
+                    "border-red-500 bg-red-50 dark:border-red-500 dark:bg-red-900/30";
+                }
+              } else if (selectedAnswer === option) {
+                buttonClass =
+                  "border-cyan-500 bg-cyan-50 dark:border-teal-500 dark:bg-teal-900/30";
+              }
               return (
                 <button
                   key={index}
-                  onClick={() => handleSelectAnswer(option)}
-                  className={`w-full flex justify-between items-center p-4 rounded-lg border transition ${
-                    isSelected
-                      ? "border-cyan-500 bg-cyan-50 dark:border-teal-500 dark:bg-teal-900/30"
-                      : "border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700"
-                  }`}
+                  onClick={() => !showAnswer && handleSelectAnswer(option)}
+                  disabled={showAnswer}
+                  className={`w-full flex justify-between items-center p-4 rounded-lg border transition ${buttonClass}`}
                 >
                   <span className="text-gray-800 dark:text-gray-200">
                     {option}
                   </span>
-                  {isSelected && (
-                    <span className="text-cyan-500 dark:text-teal-400 font-bold">
-                      ✓
-                    </span>
+                  {showAnswer && option === correctAnswer && (
+                    <span className="text-green-500 font-bold">✓</span>
                   )}
+                  {showAnswer &&
+                    option === selectedAnswer &&
+                    option !== correctAnswer && (
+                      <span className="text-red-500 font-bold">✗</span>
+                    )}
                 </button>
               );
             })}
           </div>
 
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={handlePreviousQuestion}
-              disabled={currentQuestionIndex === 0}
-              className="flex-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNextQuestion}
-              disabled={!selectedAnswer}
-              className="flex-1 bg-cyan-500 hover:bg-cyan-600 dark:bg-teal-500 dark:hover:bg-teal-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              {currentQuestionIndex < questions.length - 1
-                ? "Next"
-                : "Finish"}
-            </button>
-          </div>
+          {/* Explanation */}
+          {showAnswer && currentQuestion.explanation && (
+            <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200">
+              💡 <strong>Explanation:</strong> {currentQuestion.explanation}
+            </div>
+          )}
+
+          {/* Next Button */}
+          {showAnswer && (
+            <div className="mt-6 text-right">
+              <button
+                onClick={handleNextQuestion}
+                className="bg-cyan-500 hover:bg-cyan-600 dark:bg-teal-500 dark:hover:bg-teal-600 text-white px-4 py-2 rounded-lg"
+              >
+                {currentQuestionIndex < questions.length - 1
+                  ? "Next"
+                  : "Finish"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -273,14 +285,15 @@ const Quiz = () => {
       questions.length > 0
         ? ((score / questions.length) * 100).toFixed(0)
         : 0;
-
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-lg p-6 text-center">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             🏆 Quiz Completed! 🏆
           </h2>
-          <p className="text-gray-600 dark:text-gray-300">Your final score is:</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            Your final score is:
+          </p>
           <p className="text-5xl font-bold text-gray-900 dark:text-white my-2">
             {score} / {questions.length}
           </p>

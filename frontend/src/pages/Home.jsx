@@ -7,50 +7,50 @@ const Home = () => {
       {/* Hero Section */}
       {/* ============================================= */}
       <section className="text-center py-16 px-4 sm:px-6 lg:px-8">
-  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-    Stop Searching. Start Learning.
-  </h1>
-  <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300">
-    Track thousands of online courses from top platforms and never miss a
-    deal. Your all-in-one hub for upskilling.
-  </p>
-  <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-    <a
-      href="#start"
-      className="inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-cyan-600 dark:bg-teal-400 dark:hover:bg-teal-500 transform hover:-translate-y-1 transition-all duration-300"
-    >
-      Start Tracking for Free
-    </a>
-  </div>
-  <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-    No credit card required. Free forever.
-  </p>
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+          Stop Searching. Start Learning.
+        </h1>
+        <p className="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300">
+          Track thousands of online courses from top platforms and never miss a
+          deal. Your all-in-one hub for upskilling.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="#start"
+            className="inline-block bg-cyan-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-cyan-600 dark:bg-teal-400 dark:hover:bg-teal-500 transform hover:-translate-y-1 transition-all duration-300"
+          >
+            Start Tracking for Free
+          </a>
+        </div>
+        <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+          No credit card required. Free forever.
+        </p>
 
-  {/* --- MODIFIED BRAND SECTION --- */}
-  <div className="mt-12 flex justify-center items-center gap-4 sm:gap-8 flex-wrap">
-    {[
-      { name: "Coursera", url: "https://www.coursera.org" },
-      { name: "Udemy", url: "https://www.udemy.com" },
-      { name: "edX", url: "https://www.edx.org" },
-      { name: "upGrad", url: "https://www.upgrad.com" },
-      { name: "NPTEL", url: "https://nptel.ac.in" },
-    ].map((brand) => (
-      <a
-        key={brand.name}
-        href={brand.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="px-4 py-2 rounded-lg font-semibold text-lg text-slate-500 dark:text-slate-400
+        {/* --- MODIFIED BRAND SECTION --- */}
+        <div className="mt-12 flex justify-center items-center gap-4 sm:gap-8 flex-wrap">
+          {[
+            { name: "Coursera", url: "https://www.coursera.org" },
+            { name: "Udemy", url: "https://www.udemy.com" },
+            { name: "edX", url: "https://www.edx.org" },
+            { name: "upGrad", url: "https://www.upgrad.com" },
+            { name: "NPTEL", url: "https://nptel.ac.in" },
+          ].map((brand) => (
+            <a
+              key={brand.name}
+              href={brand.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg font-semibold text-lg text-slate-500 dark:text-slate-400
                    grayscale opacity-70 hover:grayscale-0 hover:opacity-100 
                    hover:bg-white hover:shadow-md hover:text-cyan-600
                    dark:hover:bg-slate-800 dark:hover:text-cyan-300
                    transition-all duration-300 transform hover:-translate-y-1"
-      >
-        {brand.name}
-      </a>
-    ))}
-  </div>
-</section>
+            >
+              {brand.name}
+            </a>
+          ))}
+        </div>
+      </section>
 
       {/* ============================================= */}
       {/* How It Works Section */}
