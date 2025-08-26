@@ -85,7 +85,7 @@ const Navbar = () => {
         <div className="hidden md:flex gap-6 justify-center flex-1">
           <Link to="/home" className="hover:underline">Home</Link>
           <Link to="/courses" className="hover:underline">Courses</Link>
-          <Link to="/practice" className="hover:underline">Practice</Link>
+          <Link to="/compiler" className="hover:underline">Compiler</Link>
           <Link to="/problem" className="hover:underline">Problem</Link>
           <Link to="/quiz" className="hover:underline">Quiz</Link>
           <Link to="/interview" className="hover:underline">Interview</Link>

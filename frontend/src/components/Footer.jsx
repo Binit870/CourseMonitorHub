@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Twitter, Github, Linkedin, BookOpen } from "lucide-react";
+import { Twitter, Github, Linkedin, BookOpen, Instagram } from "lucide-react";
 
 const Footer = () => {
-  // Simplified the link sections to only the essentials
   const linkSections = [
     {
       title: "Company",
@@ -44,21 +43,12 @@ const Footer = () => {
             <p className="text-gray-500 dark:text-gray-400">
               Making the world a better place through constructing elegant hierarchies.
             </p>
-            <div className="flex space-x-5">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
-                <Twitter size={24} />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
-                <Github size={24} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
-                <Linkedin size={24} />
-              </a>
-            </div>
+            {/* --- Social icons were REMOVED from here --- */}
           </div>
 
-          {/* Links */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+          {/* Links and Socials */}
+          {/* --- MODIFIED: Adjusted grid columns to fit the new section --- */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
             {linkSections.map((section) => (
               <div key={section.title}>
                 <h3 className="text-sm font-semibold uppercase">
@@ -78,11 +68,33 @@ const Footer = () => {
                 </ul>
               </div>
             ))}
+            
+            {/* --- NEW: "Connect with us" section added here --- */}
+            <div className="pl-4 ">
+  {/* --- MODIFIED: Added text-lg to increase font size --- */}
+  <h3 className="font-bold text-lg">
+    Connect with us
+  </h3>
+  <div className="mt-4 flex space-x-5">
+    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+      <Instagram size={32} />
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+      <Twitter size={32} />
+    </a>
+    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+      <Github size={32} />
+    </a>
+    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-500 dark:hover:text-cyan-400">
+      <Linkedin size={32} />
+    </a>
+  </div>
+</div>
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 text-center">
+        <div className="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 text-center ">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} CourseMonitorHub, Inc. All rights reserved.
           </p>

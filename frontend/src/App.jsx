@@ -12,7 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Your route guard
 // Import Pages
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
-import Practice from "./pages/Practice";
+import Compiler from "./pages/Compiler";
 import Problem from "./pages/Problem";
 import Quiz from "./pages/Quiz";
 import Dashboard from "./pages/Dashboard";
@@ -67,10 +67,10 @@ const App = () => {
             }
           />
           <Route
-            path="/practice"
+            path="/compiler"
             element={
               <ProtectedRoute>
-                <Practice />
+                <Compiler />
               </ProtectedRoute>
             }
           />
